@@ -119,6 +119,33 @@ To change the title based on the user you can use a closure:
 )
 ```
 
+### Customizing visibility
+
+```php
+<?php
+
+namespace App\Providers\Filament;
+
+use Filament\Panel;
+use Filament\PanelProvider;
+use Orion\FilamentGreeter\GreeterPlugin;
+
+class AdminPanelProvider extends PanelProvider
+{
+    public function panel(Panel $panel): Panel
+    {
+        return $panel
+            // ...
+            ->plugin(
+                GreeterPlugin::make()
+                    ->visible(fn() => auth()->user()->can('view greeter'))
+                    // OR
+                    ->hidden(fn() => auth()->user()->cannot('view greeter')),
+            );
+    }
+}
+```
+
 ## Examples
 
 ![example-rand](https://raw.githubusercontent.com/oriondevelops/filament-greeter/main/docs/example-rand.png)
